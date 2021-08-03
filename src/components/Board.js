@@ -7,7 +7,7 @@ const Board = ({ player1, player2, count, setCount }) => {
     const [turn, setTurn] = useState(1);
     const [winner, setWinner] = useState(null);
     const [board, setBoard] = useState(Array(9).fill(null));
-    const [games, setGames] = useState([]);
+    const [history, setHistory] = useState([]);
 
     const day = new Date();
     const gameTime = `${day.getDate()}.${day.getMonth()}. ${day.getHours()}:${day.getMinutes()}`;
@@ -25,14 +25,14 @@ const Board = ({ player1, player2, count, setCount }) => {
     }
 
     useEffect(() => {
-        localStorage.setItem('games', JSON.stringify(games));
-    }, [games]);
+        localStorage.setItem('history', JSON.stringify(history));
+    }, [history]);
 
     const playAgain = () => {
         if (winner === 1 || winner === -1) {
-            setGames([...games, gameWin]);
+            setHistory([...history, gameWin]);
         } else {
-            setGames([...games, gameDraw]);
+            setHistory([...history, gameDraw]);
         }
         setBoard(Array(9).fill(null));
         setWinner(null);
@@ -84,11 +84,10 @@ const Board = ({ player1, player2, count, setCount }) => {
                         player1={player1}
                         player2={player2}
                         playAgain={playAgain}
-                        games={games}
                     />
-                    <Message games={games} />
                 </>
             ) : ''}
+            <Message history={history} />
         </div>
     );
 }
